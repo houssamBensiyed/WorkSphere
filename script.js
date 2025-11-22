@@ -108,4 +108,15 @@ function initApp() {
       select.appendChild(opt);
     });
   }
+  loadData();
+}
+
+function loadData() {
+  const stored = localStorage.getItem(DB_KEY);
+  if (stored) {
+    employees = JSON.parse(stored);
+  } else {
+    employees = JSON.parse(JSON.stringify(INITIAL_DATA));
+  }
+  renderApp();
 }
