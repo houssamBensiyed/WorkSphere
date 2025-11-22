@@ -195,3 +195,35 @@ function resetSimulation() {
     initApp();
   }
 }
+
+function renderApp(filterText = "") {
+  document
+    .querySelectorAll("token-container")
+    .forEach((el) => (el.innerHTML = ""));
+  const unassignedZone = document.getElementById("unassigned-zone");
+  unassignedZone.innerHTML = "";
+
+  const filtered = employees.filter(
+    (e) =>
+      e.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      e.role.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  document.getElementById("unassigned-count").innerText = filtered.filter(
+    (e) => e.location === "unassigned"
+  ).length;
+
+  filtered.forEach((emp) => {
+    if (emp.location === "unassigned") {
+      unassignedZone.appendChild(createListItem(emp));
+    } else {
+      const container = document.getElementById(`container-${emp.location}`);
+      if (container) container.appendChild(createToken(emp));
+    }
+  });
+
+  checkMandatoryZones();
+}
+function filterView(text) {
+  renderApp(text);
+}
