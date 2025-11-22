@@ -97,3 +97,15 @@ const INITIAL_DATA = [
 let employees = [];
 let draggedId = null;
 let currentProfileId = null;
+
+function initApp() {
+  const select = document.getElementById("emp-role");
+  if (select.options.length <= 1) {
+    Object.keys(ROLES_CONFIG).forEach((role) => {
+      const opt = document.createElement("option");
+      opt.value = role;
+      opt.innerText = role;
+      select.appendChild(opt);
+    });
+  }
+}
