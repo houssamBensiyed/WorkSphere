@@ -120,3 +120,78 @@ function loadData() {
   }
   renderApp();
 }
+
+function saveData() {
+  localStorage.setItem(DB_KEY, JSON.stringify(employees));
+}
+
+function getEmployeeById(id) {
+  return employees.find((e) => e.id === id);
+}
+
+function addEmployee(emp) {
+  employees.push(emp);
+  saveData();
+  renderApp();
+}
+
+function updateEmployee(id, data) {
+  const idx = employees.findIndex((e) => e.id === id);
+  if (idx !== -1) {
+    employees[idx] = { ...employees[idx], ...data };
+    saveData();
+    renderApp();
+  }
+}
+
+function deleteEmployee(id) {
+  employees = employees.filter((e) => e.id !== id);
+  saveData();
+  renderApp();
+}
+
+function moveEmployee(id, newZoneId) {
+  const emp = getEmployeeById(id);
+  if (emp) {
+    emp.location = newZoneId;
+    saveData();
+    renderApp();
+  }
+}
+
+function validateMove(empId, zoneId) {
+  if (zoneId === "unassigned") return { valid: true };
+  const emp = getEmployeeById(empId);
+  if (!emp) return { valid: false, msg: "Employee not found" };
+
+  const zoneRule = ZONES_CONFIG[zoneId];
+  const count = employees.filter((e) => e.location === zoneId).length;
+
+  if (count >= zoneRule.max && emp.location !== zoneId) {
+    return { valid: false, msg: `Zone ${zoneRule.name} is full.` };
+  }
+
+  if (emp.rile === "Manager") return { valid: true };
+
+  if (zoneId === "Vault" && emp.role === "Cleaner") {
+    return { valid: false, msg: "Access Denied: Vault" };
+  }
+
+  if (
+    zoneRule.restricted.length > 0 &&
+    !zoneRule.restricted.includes(emp.role)
+  ) {
+    return {
+      value: false,
+      msg: `Role ${emp.role} not authorized for ${zoneRule.name}`,
+    };
+  }
+  return { valid: true };
+}
+
+function resetSimulation() {
+  if (confirm("Reset all data to default?")) {
+    localStorage.removeItem(DB_KEY);
+    initApp();
+  }
+}
