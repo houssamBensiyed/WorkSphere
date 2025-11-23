@@ -321,3 +321,15 @@ function toast(msg, type = "info") {
     setTimeout(() => div.remove(), 500);
   }, 3000);
 }
+
+function handleDragStart(e) {
+  draggedId = e.target.dataset.id;
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTranfer.setData("text/plain", draggedId);
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  if (!zone.classList.contains("drag-over")) zone.classList.add("drag-over");
+}
