@@ -1,37 +1,200 @@
 :root {
-  --wall-color: #3a3a3c;
-  --wall-thickness: 12px;
-  --glass-panel: rgba(255, 255, 255, 0.65);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.5);
-
-  --wood-texture: repeating-linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.03) 0px,
-    rgba(0, 0, 0, 0.03) 1px,
-    transparent 1px,
-    transparent 16px
-  );
-  --wood-texture-v: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.05) 0px,
-    rgba(0, 0, 0, 0.05) 1px,
-    transparent 1px,
-    transparent 16px
-  );
+    --couleur-mur: #3a3a3c;
+    --epaisseur-mur: 12px;
+    --panneau-verre: #ffffffa6;
+    --bordure-verre: 1px solid rgba(255, 255, 255, 0.5);
+    
+    /* Textures */
+    --texture-bois: repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 16px);
+    --texture-bois-v: repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 16px);
 }
 
 body {
-  font-family: "Inter", sans-serif;
-  background-color: #f2f2f7;
-  background-image: radial-gradient(
-      at 0% 0%,
-      rgba(142, 125, 107, 0.1) 0px,
-      transparent 50%
-    ),
-    radial-gradient(at 100% 0%, rgba(200, 200, 200, 0.1) 0px, transparent 50%);
-  color: #1d1d1f;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background-color: #f2f2f7;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(142, 125, 107, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(200, 200, 200, 0.1) 0px, transparent 50%);
+    color: #1d1d1f;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
+
+/* --- Mise en page --- */
+.conteneur-app {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    padding: 20px;
+    padding-top: 100px;
+    gap: 20px;
+}
+
+/* Barre de navigation flottante en verre */
+.nav-verre {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+/* Barre latérale */
+.sidebar {
+    width: 320px;
+    background: var(--panneau-verre);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 24px;
+    border: var(--bordure-verre);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    box-shadow: var(--glass);
+}
+
+/* Contenu principal */
+.contenu-principal {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    border: var(--bordure-verre);
+    padding: 40px;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(15px);
+    box-shadow: inset 0 0 40px rgba(255,255,255,0.5);
+}
+
+/* --- Plan d'étage --- */
+.plan-etage {
+    display: grid;
+    grid-template-columns: 1.8fr 0.6fr 1fr 1fr;
+    grid-template-rows: 1fr 1.4fr;
+    grid-template-areas:
+        "conference couloir serveurs securite"
+        "reception  couloir personnel archives";
+    width: 100%;
+    max-width: 1300px;
+    aspect-ratio: 16/9;
+    background-color: var(--couleur-mur);
+    border: var(--epaisseur-mur) solid var(--couleur-mur);
+    gap: var(--epaisseur-mur);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15);
+    user-select: none;
+}
+
+/* Zones */
+.zone {
+    position: relative;
+    background-color: #f2f2f7;
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+}
+
+.zone.glisser-dessus {
+    background-color: rgba(142, 125, 107, 0.15) !important;
+    box-shadow: inset 0 0 0 2px #8e7d6b;
+}
+
+.zone.depot-invalide {
+    box-shadow: inset 0 0 0 2px #ff3b30;
+    animation: secouer 0.3s ease-in-out;
+}
+
+.zone.vide-requise {
+    background-image: repeating-linear-gradient(45deg, rgba(255, 59, 48, 0.05), rgba(255, 59, 48, 0.05) 10px, transparent 10px, transparent 20px);
+}
+
+/* --- Styles des Pièces --- */
+.zone-conference { grid-area: conference; background-color: #f5f0e6; background-image: var(--texture-bois-v); }
+.table-conf { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 45%; background: #ffffff; border-radius: 8px; border: 1px solid #d1d1d6; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; color: #86868b; font-size: 0.7rem; font-weight: 500; }
+.chaise-conf { position: absolute; width: 30px; height: 25px; background: #86868b; border-radius: 4px; opacity: 0.8; }
+
+.zone-reception { grid-area: reception; background-color: #e6dcd3; background-image: var(--texture-bois); }
+.bureau-recep { position: absolute; top: 30px; right: 10px; width: 120px; height: 100px; border-top: 25px solid #a18e78; border-right: 25px solid #a18e78; border-radius: 0 16px 0 0; opacity: 0.9; }
+.chaise-recep { position: absolute; top: 50px; right: 40px; width: 30px; height: 30px; background: #6b5b4b; border-radius: 50%; }
+.canape-l { position: absolute; bottom: 40px; left: 10px; top: 150px; width: 60px; background: #a18e78; border-radius: 8px; }
+.table-ronde-recep { position: absolute; bottom: 80px; left: 100px; width: 80px; height: 80px; background: #4a3b2a; border-radius: 50%; border: 4px solid #382c1e; opacity: 0.8; }
+
+.zone-couloir { grid-area: couloir; background-color: #e5e5ea; background-image: repeating-linear-gradient(0deg, transparent 0, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 21px); }
+.tapis { position: absolute; top: 15%; bottom: 15%; left: 25%; right: 25%; background: rgba(142, 125, 107, 0.1); border-radius: 50px; border: 1px solid rgba(142, 125, 107, 0.2); }
+
+.zone-serveurs { grid-area: serveurs; background-color: #f2f2f7; }
+.rack { width: 90%; height: 20%; background: #d1d1d6; margin: 5px auto; border-radius: 4px; border: 1px solid #aeaeb2; position: relative; overflow: hidden; }
+.rack::after { content:''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 3px); }
+
+.zone-securite { grid-area: securite; background-color: #e5e5ea; border-left: 4px solid #3a3a3c; }
+.bureau-angle-sec { position: absolute; top: 0; left: 0; width: 80px; height: 80px; background: #8e8e93; border-radius: 0 0 24px 0; opacity: 0.8; }
+
+.zone-personnel { grid-area: personnel; background-color: #fffdf5; }
+.canape-perso { position: absolute; bottom: 10px; right: 10px; width: 80px; height: 40px; background: #c7c7cc; border-radius: 8px; }
+
+.zone-archives { grid-area: archives; background-color: #d1d1d6; background-image: radial-gradient(circle, #8e8e93 1px, transparent 1px); background-size: 16px 16px; }
+.boite-archive { width: 35px; height: 35px; background: #aeaeb2; border-radius: 4px; margin: 5px; border: 1px solid #8e8e93; display: inline-block; }
+
+/* --- Étiquettes --- */
+.etiquette-zone { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.8); backdrop-filter: blur(8px); color: #1d1d1f; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px; pointer-events: none; z-index: 5; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+/* --- Jetons (Employés) --- */
+.conteneur-jetons { position: absolute; inset: 0; padding: 40px 10px 10px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 10px; z-index: 10; pointer-events: none; }
+
+.jeton { 
+    width: 48px; height: 48px; border-radius: 50%; border: 2px solid white; 
+    background-size: cover; background-position: center; background-color: #e5e5ea; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: grab; pointer-events: auto; 
+    transition: opacity 0.2s ease; position: relative; 
+}
+.jeton:hover { opacity: 0.85; border-color: #8e7d6b; }
+.jeton:active { cursor: grabbing; opacity: 0.6; }
+
+.badge-jeton { position: absolute; bottom: -2px; right: -2px; width: 18px; height: 18px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e5ea; color: #1d1d1f; font-size: 9px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.suppr-jeton { position: absolute; top: -6px; left: -6px; width: 18px; height: 18px; border-radius: 50%; background: #ff3b30; color: white; font-size: 10px; display: none; align-items: center; justify-content: center; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.jeton:hover .suppr-jeton { display: flex; }
+
+/* --- Interactif --- */
+.btn-ajout-zone { 
+    position: absolute; bottom: 12px; right: 12px; width: 28px; height: 28px; 
+    background: rgba(255, 255, 255, 0.9); color: #8e7d6b; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; 
+    font-size: 14px; font-weight: normal; transition: background-color 0.2s ease, color 0.2s ease; 
+    pointer-events: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);
+}
+.btn-ajout-zone:hover { background: #8e7d6b; color: white; }
+
+/* Portes */
+.porte { position: absolute; background: #d1d1d6; z-index: 20; border-radius: 2px; }
+.porte-v { width: 8px; height: 40px; } 
+.p-conf { top: 20%; left: -10px; } .p-recep { top: 70%; left: -10px; } .p-serv { top: 20%; right: -10px; } .p-perso { top: 75%; right: -10px; }
+.p-sec { bottom: 10px; left: -20px; width: 8px; height: 40px; }
+
+/* --- Liste Non Assignés --- */
+.element-non-assigne { 
+    display: flex; align-items: center; gap: 12px; padding: 12px; background: white; 
+    border-radius: 12px; margin-bottom: 8px; cursor: grab; transition: background-color 0.2s ease, border-color 0.2s ease; 
+    border: 1px solid transparent; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.element-non-assigne:hover { background: #f5f5f7; border-color: #d1d1d6; }
+.element-non-assigne img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid #e5e5ea; }
+.u-nom { font-size: 0.9rem; font-weight: 500; color: #1d1d1f; }
+.u-role { font-size: 0.75rem; color: #86868b; }
+
+/* --- Modales --- */
+.fond-modale { background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(8px); display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; justify-content: center; align-items: center; z-index: 50; }
+.fond-modale.actif { display: flex; }
+.contenu-modale { background: #ffffff; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); color: #1d1d1f; border: 1px solid #f2f2f7; width: 100%; max-width: 500px; position: relative; }
+.champ-formulaire { background: #f2f2f7; border: 1px solid transparent; color: #1d1d1f; border-radius: 12px; transition: background-color 0.2s ease; }
+.champ-formulaire:focus { border-color: #8e7d6b; outline: none; background: #ffffff; border: 1px solid #8e7d6b; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d1d6; border-radius: 10px; }
+
+@keyframes secouer { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }

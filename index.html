@@ -1,1179 +1,308 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkSphere - Professionnel Clair</title>
-
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <!-- Font Awesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Inter", "sans-serif"],
-            },
-            colors: {
-              apple: {
-                gris: "#f5f5f7", // Very light gray (classic Apple background)
-                sombre: "#1d1d1f", // Almost-black (main text color)
-                bleu: "#0071e3", // Apple’s famous blue
-                brun: "#8e7d6b", // Warm wood brown
-                brunFonce: "#5e5042", // Darker brown
-                surface: "rgba(255, 255, 255, 0.85)", // Semi-transparent white for glass
-              },
-              boxShadow: {
-                verre: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
-                flottant: "0 10px 40px -10px rgba(0,0,0,0.08)",
-              },
-            },
-          },
-        },
-      };
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            gris: '#f5f5f7',
+                            sombre: '#1d1d1f',
+                            bleu: '#0071e3',
+                            brun: '#8e7d6b', 
+                            brunFonce: '#5e5042',
+                            surface: 'rgba(255, 255, 255, 0.85)',
+                        }
+                    },
+                    boxShadow: {
+                        'verre': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                        'flottant': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    }
+                }
+            }
+        }
     </script>
-  </head>
-  <body class="bg-[#f2f2f7]">
-    <!-- Barre de navigation flottante en verre -->
-    <nav
-      class="fixed top-4 left-4 right-4 h-[72px] z-50 flex items-center justify-between px-6 rounded-2xl nav-verre"
-    >
-      <div class="flex items-center gap-4">
-        <div
-          class="w-10 h-10 bg-[#1d1d1f] rounded-xl flex items-center justify-center text-white text-lg shadow-md"
-        >
-          <i class="fa-solid fa-layer-group"></i>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold tracking-wide text-[#1d1d1f]">
-            WorkSphere
-          </h1>
-          <p
-            class="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-none mt-0.5"
-          >
-            Gestion d'Espace
-          </p>
-        </div>
-      </div>
 
-      <div class="flex gap-3">
-        <button
-          onclick="reinitialiserSimulation()"
-          class="group px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 bg-transparent hover:bg-white/50 rounded-full transition-all duration-300 border border-transparent hover:border-gray-200"
-        >
-          <i
-            class="fa-solid fa-arrow-rotate-left mr-2 group-hover:-rotate-180 transition-transform duration-500"
-          ></i>
-          Réinitialiser
-        </button>
-        <button
-          onclick="repartitionAuto()"
-          class="px-5 py-2 text-xs font-medium text-white bg-[#1d1d1f] hover:opacity-90 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
-        >
-          Répartition Auto
-        </button>
-      </div>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#f2f2f7]">
+
+    <!-- Barre de navigation flottante en verre -->
+    <nav class="fixed top-4 left-4 right-4 h-[72px] z-50 flex items-center justify-between px-6 rounded-2xl nav-verre">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-[#1d1d1f] rounded-xl flex items-center justify-center text-white text-lg shadow-md">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-wide text-[#1d1d1f]">WorkSphere</h1>
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-none mt-0.5">Gestion d'Espace</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-3">
+            <button onclick="reinitialiserSimulation()" class="group px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 bg-transparent hover:bg-white/50 rounded-full transition-all duration-300 border border-transparent hover:border-gray-200">
+                <i class="fa-solid fa-arrow-rotate-left mr-2 group-hover:-rotate-180 transition-transform duration-500"></i> Réinitialiser
+            </button>
+            <button onclick="repartitionAuto()" class="px-5 py-2 text-xs font-medium text-white bg-[#1d1d1f] hover:opacity-90 rounded-full shadow-lg hover:scale-105 transition-all duration-300">
+                Répartition Auto
+            </button>
+        </div>
     </nav>
 
     <div class="conteneur-app">
-      <!-- Barre Latérale -->
-      <aside class="sidebar">
-        <h2
-          class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-6"
-        >
-          Personnel
-        </h2>
-
-        <!-- Recherche -->
-        <div class="relative mb-6 group">
-          <i
-            class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400 transition-colors"
-          ></i>
-          <input
-            type="text"
-            id="entree-recherche"
-            placeholder="Rechercher une équipe..."
-            oninput="filtrerVue(this.value)"
-            class="w-full bg-gray-100 border border-transparent py-2.5 pl-10 pr-4 rounded-xl text-sm text-gray-900 focus:bg-white focus:border-gray-200 focus:ring-2 focus:ring-gray-100 transition-all outline-none"
-          />
-        </div>
-
-        <!-- Bouton Ajouter -->
-        <button
-          onclick="ouvrirModale('ajout')"
-          class="w-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-900 font-medium py-3 px-4 rounded-xl mb-6 transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
-        >
-          <div
-            class="w-6 h-6 rounded-full bg-apple-brown flex items-center justify-center text-white text-xs"
-          >
-            <i class="fa-solid fa-plus"></i>
-          </div>
-          <span>Nouvel Employé</span>
-        </button>
-
-        <!-- Liste Non Assignés -->
-        <div class="flex justify-between items-end mb-3 px-1">
-          <span class="text-xs font-medium text-gray-400">Non Assignés</span>
-          <span
-            id="compteur-non-assignes"
-            class="bg-gray-200 text-gray-600 text-[10px] px-2 py-0.5 rounded-full font-bold"
-            >0</span
-          >
-        </div>
-
-        <div
-          id="zone-non-assigne"
-          class="flex-1 overflow-y-auto pr-1 zone zone-droppable min-h-[100px] bg-transparent"
-          data-zone="non_assigne"
-          ondragover="gererSurvol(event)"
-          ondrop="gererDepot(event)"
-        >
-          <!-- Injecté par JS -->
-        </div>
-      </aside>
-
-      <!-- Contenu Principal -->
-      <main class="contenu-principal">
-        <div class="plan-etage">
-          <!-- 1. Salle de Conférence -->
-          <div
-            class="zone zone-conference zone-droppable"
-            id="zone-conference"
-            data-zone="conference"
-            ondragover="gererSurvol(event)"
-            ondrop="gererDepot(event)"
-          >
-            <div class="etiquette-zone">Conférence</div>
-            <div class="table-conf">RÉUNION</div>
-            <div class="chaise-conf" style="top: 35px; left: 25%"></div>
-            <div class="chaise-conf" style="top: 35px; left: 45%"></div>
-            <div class="chaise-conf" style="top: 35px; left: 65%"></div>
-            <div class="chaise-conf" style="bottom: 35px; left: 25%"></div>
-            <div class="chaise-conf" style="bottom: 35px; left: 45%"></div>
-            <div class="chaise-conf" style="bottom: 35px; left: 65%"></div>
-            <div class="conteneur-jetons" id="conteneur-conference"></div>
-            <div class="btn-ajout-zone" onclick="ajoutRapide('conference')">
-              <i class="fa-solid fa-plus"></i>
+        <!-- Barre Latérale -->
+        <aside class="sidebar">
+            <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-6">Personnel</h2>
+            
+            <!-- Recherche -->
+            <div class="relative mb-6 group">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400 transition-colors"></i>
+                <input type="text" id="entree-recherche" placeholder="Rechercher une équipe..." oninput="filtrerVue(this.value)"
+                       class="w-full bg-gray-100 border border-transparent py-2.5 pl-10 pr-4 rounded-xl text-sm text-gray-900 focus:bg-white focus:border-gray-200 focus:ring-2 focus:ring-gray-100 transition-all outline-none">
             </div>
-          </div>
 
-          <!-- 2. Couloir -->
-          <div class="zone zone-couloir">
-            <div class="tapis"></div>
-            <div class="porte porte-v p-conf"></div>
-            <div class="porte porte-v p-recep"></div>
-            <div class="porte porte-v p-serv"></div>
-            <div class="porte porte-v p-perso"></div>
-          </div>
+            <!-- Bouton Ajouter -->
+            <button onclick="ouvrirModale('ajout')" class="w-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-900 font-medium py-3 px-4 rounded-xl mb-6 transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm">
+                <div class="w-6 h-6 rounded-full bg-apple-brown flex items-center justify-center text-white text-xs">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <span>Nouvel Employé</span>
+            </button>
 
-          <!-- 3. Salle Serveurs -->
-          <div
-            class="zone zone-serveurs zone-droppable"
-            id="zone-serveurs"
-            data-zone="serveurs"
-            ondragover="gererSurvol(event)"
-            ondrop="gererDepot(event)"
-          >
-            <div class="etiquette-zone">Serveurs</div>
-            <div
-              class="flex flex-col h-full justify-center items-center pt-6 pb-2 w-full gap-2"
-            >
-              <div class="rack"></div>
-              <div class="rack"></div>
-              <div class="rack"></div>
+            <!-- Liste Non Assignés -->
+            <div class="flex justify-between items-end mb-3 px-1">
+                <span class="text-xs font-medium text-gray-400">Non Assignés</span>
+                <span id="compteur-non-assignes" class="bg-gray-200 text-gray-600 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
             </div>
-            <div class="conteneur-jetons" id="conteneur-serveurs"></div>
-            <div class="btn-ajout-zone" onclick="ajoutRapide('serveurs')">
-              <i class="fa-solid fa-plus"></i>
+            
+            <div id="zone-non-assigne" class="flex-1 overflow-y-auto pr-1 zone zone-droppable min-h-[100px] bg-transparent" data-zone="non_assigne" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                <!-- Injecté par JS -->
             </div>
-          </div>
+        </aside>
 
-          <!-- 4. Salle Sécurité -->
-          <div
-            class="zone zone-securite zone-droppable"
-            id="zone-securite"
-            data-zone="securite"
-            ondragover="gererSurvol(event)"
-            ondrop="gererDepot(event)"
-          >
-            <div class="etiquette-zone">Sécurité</div>
-            <div class="bureau-angle-sec"></div>
-            <div class="porte p-sec"></div>
-            <div class="conteneur-jetons" id="conteneur-securite"></div>
-            <div class="btn-ajout-zone" onclick="ajoutRapide('securite')">
-              <i class="fa-solid fa-plus"></i>
-            </div>
-          </div>
+        <!-- Contenu Principal -->
+        <main class="contenu-principal">
+            <div class="plan-etage">
+                
+                <!-- 1. Salle de Conférence -->
+                <div class="zone zone-conference zone-droppable" id="zone-conference" data-zone="conference" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                    <div class="etiquette-zone">Conférence</div>
+                    <div class="table-conf">RÉUNION</div>
+                    <div class="chaise-conf" style="top: 35px; left: 25%;"></div>
+                    <div class="chaise-conf" style="top: 35px; left: 45%;"></div>
+                    <div class="chaise-conf" style="top: 35px; left: 65%;"></div>
+                    <div class="chaise-conf" style="bottom: 35px; left: 25%;"></div>
+                    <div class="chaise-conf" style="bottom: 35px; left: 45%;"></div>
+                    <div class="chaise-conf" style="bottom: 35px; left: 65%;"></div>
+                    <div class="conteneur-jetons" id="conteneur-conference"></div>
+                    <div class="btn-ajout-zone" onclick="ajoutRapide('conference')"><i class="fa-solid fa-plus"></i></div>
+                </div>
 
-          <!-- 5. Réception -->
-          <div
-            class="zone zone-reception zone-droppable"
-            id="zone-reception"
-            data-zone="reception"
-            ondragover="gererSurvol(event)"
-            ondrop="gererDepot(event)"
-          >
-            <div class="etiquette-zone">Réception</div>
-            <div class="bureau-recep"></div>
-            <div class="chaise-recep"></div>
-            <div class="canape-l"></div>
-            <div class="table-ronde-recep"></div>
-            <div class="conteneur-jetons" id="conteneur-reception"></div>
-            <div class="btn-ajout-zone" onclick="ajoutRapide('reception')">
-              <i class="fa-solid fa-plus"></i>
-            </div>
-          </div>
+                <!-- 2. Couloir -->
+                <div class="zone zone-couloir">
+                    <div class="tapis"></div>
+                    <div class="porte porte-v p-conf"></div>
+                    <div class="porte porte-v p-recep"></div>
+                    <div class="porte porte-v p-serv"></div>
+                    <div class="porte porte-v p-perso"></div>
+                </div>
 
-          <!-- 6. Salle Personnel -->
-          <div
-            class="zone zone-personnel zone-droppable"
-            id="zone-personnel"
-            data-zone="personnel"
-            ondragover="gererSurvol(event)"
-            ondrop="gererDepot(event)"
-          >
-            <div class="etiquette-zone">Détente</div>
-            <div class="canape-perso"></div>
-            <div class="conteneur-jetons" id="conteneur-personnel"></div>
-            <div class="btn-ajout-zone" onclick="ajoutRapide('personnel')">
-              <i class="fa-solid fa-plus"></i>
-            </div>
-          </div>
+                <!-- 3. Salle Serveurs -->
+                <div class="zone zone-serveurs zone-droppable" id="zone-serveurs" data-zone="serveurs" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                    <div class="etiquette-zone">Serveurs</div>
+                    <div class="flex flex-col h-full justify-center items-center pt-6 pb-2 w-full gap-2">
+                        <div class="rack"></div><div class="rack"></div><div class="rack"></div>
+                    </div>
+                    <div class="conteneur-jetons" id="conteneur-serveurs"></div>
+                    <div class="btn-ajout-zone" onclick="ajoutRapide('serveurs')"><i class="fa-solid fa-plus"></i></div>
+                </div>
 
-          <!-- 7. Archives -->
-          <div
-            class="zone zone-archives zone-droppable"
-            id="zone-archives"
-            data-zone="archives"
-            ondragover="gererSurvol(event)"
-            ondrop="gererDepot(event)"
-          >
-            <div class="etiquette-zone">Archives</div>
-            <div class="absolute bottom-4 left-4 right-4 flex justify-between">
-              <div class="boite-archive"></div>
-              <div class="boite-archive"></div>
-              <div class="boite-archive"></div>
+                <!-- 4. Salle Sécurité -->
+                <div class="zone zone-securite zone-droppable" id="zone-securite" data-zone="securite" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                    <div class="etiquette-zone">Sécurité</div>
+                    <div class="bureau-angle-sec"></div>
+                    <div class="porte p-sec"></div>
+                    <div class="conteneur-jetons" id="conteneur-securite"></div>
+                    <div class="btn-ajout-zone" onclick="ajoutRapide('securite')"><i class="fa-solid fa-plus"></i></div>
+                </div>
+
+                <!-- 5. Réception -->
+                <div class="zone zone-reception zone-droppable" id="zone-reception" data-zone="reception" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                    <div class="etiquette-zone">Réception</div>
+                    <div class="bureau-recep"></div>
+                    <div class="chaise-recep"></div>
+                    <div class="canape-l"></div>
+                    <div class="table-ronde-recep"></div>
+                    <div class="conteneur-jetons" id="conteneur-reception"></div>
+                    <div class="btn-ajout-zone" onclick="ajoutRapide('reception')"><i class="fa-solid fa-plus"></i></div>
+                </div>
+
+                <!-- 6. Salle Personnel -->
+                <div class="zone zone-personnel zone-droppable" id="zone-personnel" data-zone="personnel" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                    <div class="etiquette-zone">Détente</div>
+                    <div class="canape-perso"></div>
+                    <div class="conteneur-jetons" id="conteneur-personnel"></div>
+                    <div class="btn-ajout-zone" onclick="ajoutRapide('personnel')"><i class="fa-solid fa-plus"></i></div>
+                </div>
+
+                <!-- 7. Archives -->
+                <div class="zone zone-archives zone-droppable" id="zone-archives" data-zone="archives" ondragover="gererSurvol(event)" ondrop="gererDepot(event)">
+                    <div class="etiquette-zone">Archives</div>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between">
+                        <div class="boite-archive"></div><div class="boite-archive"></div><div class="boite-archive"></div>
+                    </div>
+                    <div class="conteneur-jetons" id="conteneur-archives"></div>
+                    <div class="btn-ajout-zone" onclick="ajoutRapide('archives')"><i class="fa-solid fa-plus"></i></div>
+                </div>
+
             </div>
-            <div class="conteneur-jetons" id="conteneur-archives"></div>
-            <div class="btn-ajout-zone" onclick="ajoutRapide('archives')">
-              <i class="fa-solid fa-plus"></i>
-            </div>
-          </div>
-        </div>
-      </main>
+        </main>
     </div>
 
     <!-- Modale : Édition/Ajout Employé -->
     <div id="modale-employe" class="fond-modale">
-      <div class="contenu-modale p-8">
-        <div class="flex justify-between items-center mb-8">
-          <h2 class="text-2xl font-bold text-gray-900" id="titre-modale">
-            Nouvel Employé
-          </h2>
-          <button
-            onclick="fermerModale('employe')"
-            class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <form
-          id="formulaire-employe"
-          onsubmit="gererSoumissionFormulaire(event)"
-        >
-          <input type="hidden" id="emp-id" />
-
-          <div class="flex gap-6 mb-8">
-            <div
-              class="w-24 h-24 rounded-full bg-gray-100 border border-gray-200 flex-shrink-0 overflow-hidden relative group"
-            >
-              <img
-                id="apercu-photo"
-                src=""
-                class="w-full h-full object-cover opacity-90"
-              />
+        <div class="contenu-modale p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900" id="titre-modale">Nouvel Employé</h2>
+                <button onclick="fermerModale('employe')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <div class="flex-1 space-y-5">
-              <div class="groupe-form">
-                <label
-                  class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
-                  >Nom Complet</label
-                >
-                <input
-                  type="text"
-                  id="emp-nom"
-                  class="champ-formulaire w-full px-4 py-2.5 text-sm"
-                  placeholder="ex: Sarah Connor"
-                  required
-                  oninput="mettreAJourApercu()"
-                />
-              </div>
-              <div class="groupe-form">
-                <label
-                  class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
-                  >Rôle</label
-                >
-                <div class="relative">
-                  <select
-                    id="emp-role"
-                    class="champ-formulaire w-full px-4 py-2.5 text-sm appearance-none bg-transparent"
-                    required
-                  >
-                    <option value="">Sélectionner un rôle...</option>
-                    <!-- Rempli par JS -->
-                  </select>
-                  <i
-                    class="fa-solid fa-chevron-down absolute right-4 top-3.5 text-gray-400 text-xs pointer-events-none"
-                  ></i>
+            
+            <form id="formulaire-employe" onsubmit="gererSoumissionFormulaire(event)">
+                <input type="hidden" id="emp-id">
+                
+                <div class="flex gap-6 mb-8">
+                    <div class="w-24 h-24 rounded-full bg-gray-100 border border-gray-200 flex-shrink-0 overflow-hidden relative group">
+                        <img id="apercu-photo" src="" class="w-full h-full object-cover opacity-90">
+                    </div>
+                    <div class="flex-1 space-y-5">
+                         <div class="groupe-form">
+                            <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1">Nom Complet</label>
+                            <input type="text" id="emp-nom" class="champ-formulaire w-full px-4 py-2.5 text-sm" placeholder="ex: Sarah Connor" required oninput="mettreAJourApercu()">
+                        </div>
+                        <div class="groupe-form">
+                            <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1">Rôle</label>
+                            <div class="relative">
+                                <select id="emp-role" class="champ-formulaire w-full px-4 py-2.5 text-sm appearance-none bg-transparent" required>
+                                    <option value="">Sélectionner un rôle...</option>
+                                    <!-- Rempli par JS -->
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-4 top-3.5 text-gray-400 text-xs pointer-events-none"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="grid grid-cols-2 gap-5 mb-5">
-            <div>
-              <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
-                >Email</label
-              >
-              <input
-                type="email"
-                id="emp-email"
-                class="champ-formulaire w-full px-4 py-2.5 text-sm"
-                placeholder="email@societe.com"
-                required
-              />
-              <p id="err-email" class="text-red-500 text-xs mt-1.5 ml-1 hidden">
-                Format invalide
-              </p>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
-                >Téléphone</label
-              >
-              <input
-                type="tel"
-                id="emp-tel"
-                class="champ-formulaire w-full px-4 py-2.5 text-sm"
-                placeholder="10 chiffres"
-                required
-              />
-              <p id="err-tel" class="text-red-500 text-xs mt-1.5 ml-1 hidden">
-                10 chiffres requis
-              </p>
-            </div>
-          </div>
+                <div class="grid grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1">Email</label>
+                        <input type="email" id="emp-email" class="champ-formulaire w-full px-4 py-2.5 text-sm" placeholder="email@societe.com" required>
+                        <p id="err-email" class="text-red-500 text-xs mt-1.5 ml-1 hidden">Format invalide</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1">Téléphone</label>
+                        <input type="tel" id="emp-tel" class="champ-formulaire w-full px-4 py-2.5 text-sm" placeholder="10 chiffres" required>
+                        <p id="err-tel" class="text-red-500 text-xs mt-1.5 ml-1 hidden">10 chiffres requis</p>
+                    </div>
+                </div>
 
-          <div class="mb-8">
-            <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
-              >URL Photo</label
-            >
-            <input
-              type="url"
-              id="emp-photo"
-              class="champ-formulaire w-full px-4 py-2.5 text-sm"
-              placeholder="https://..."
-              oninput="mettreAJourApercu()"
-            />
-          </div>
+                <div class="mb-8">
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1">URL Photo</label>
+                    <input type="url" id="emp-photo" class="champ-formulaire w-full px-4 py-2.5 text-sm" placeholder="https://..." oninput="mettreAJourApercu()">
+                </div>
 
-          <!-- Expériences -->
-          <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 mb-8">
-            <div class="flex justify-between items-center mb-4">
-              <label
-                class="text-xs font-semibold text-gray-400 uppercase tracking-wider"
-                >Expériences</label
-              >
-              <button
-                type="button"
-                onclick="ajouterChampExperience()"
-                class="w-6 h-6 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-600 text-xs transition-colors"
-              >
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-            <div id="conteneur-experiences" class="space-y-3"></div>
-          </div>
+                <!-- Expériences -->
+                <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Expériences</label>
+                        <button type="button" onclick="ajouterChampExperience()" class="w-6 h-6 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-600 text-xs transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="conteneur-experiences" class="space-y-3"></div>
+                </div>
 
-          <div class="flex justify-end gap-4">
-            <button
-              type="button"
-              onclick="fermerModale('employe')"
-              class="px-6 py-2.5 text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors"
-            >
-              Annuler
-            </button>
-            <button
-              type="submit"
-              class="px-8 py-2.5 bg-[#1d1d1f] hover:opacity-90 text-white text-sm font-medium rounded-full shadow-md transition-opacity"
-            >
-              Enregistrer
-            </button>
-          </div>
-        </form>
-      </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" onclick="fermerModale('employe')" class="px-6 py-2.5 text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors">Annuler</button>
+                    <button type="submit" class="px-8 py-2.5 bg-[#1d1d1f] hover:opacity-90 text-white text-sm font-medium rounded-full shadow-md transition-opacity">Enregistrer</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Modale : Détail Profil -->
     <div id="modale-profil" class="fond-modale">
-      <div
-        class="contenu-modale rounded-3xl overflow-hidden border-0 w-full max-w-sm"
-      >
-        <!-- En-tête Couleur -->
-        <div class="h-32 bg-gradient-to-br from-gray-800 to-black relative">
-          <button
-            onclick="fermerModale('profil')"
-            class="absolute top-5 right-5 w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full text-white flex items-center justify-center transition-all"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-
-        <div class="px-8 pb-8 text-center relative -mt-12">
-          <div
-            class="w-24 h-24 mx-auto bg-white rounded-full p-1 mb-4 shadow-xl"
-          >
-            <img
-              id="prof-photo"
-              src=""
-              class="w-full h-full rounded-full object-cover"
-            />
-          </div>
-
-          <h2 id="prof-nom" class="text-2xl font-bold text-gray-900 mb-1"></h2>
-          <span
-            id="prof-role"
-            class="inline-block px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold"
-          ></span>
-
-          <div
-            class="mt-8 text-left space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-100"
-          >
-            <div class="flex items-center gap-4">
-              <div
-                class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600"
-              >
-                <i class="fa-solid fa-envelope text-xs"></i>
-              </div>
-              <div>
-                <p
-                  class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
-                >
-                  Email
-                </p>
-                <p
-                  id="prof-email"
-                  class="text-sm text-gray-800 font-medium"
-                ></p>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600"
-              >
-                <i class="fa-solid fa-phone text-xs"></i>
-              </div>
-              <div>
-                <p
-                  class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
-                >
-                  Téléphone
-                </p>
-                <p id="prof-tel" class="text-sm text-gray-800 font-medium"></p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-6 text-left">
-            <p class="text-xs font-medium text-gray-400 mb-3 ml-1">
-              Historique
-            </p>
-            <div
-              id="prof-experiences"
-              class="space-y-2 max-h-32 overflow-y-auto custom-scroll pr-2"
-            ></div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 mt-8">
-            <button
-              onclick="retirerProfilCourant()"
-              class="py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium transition-colors"
-            >
-              Retirer
-            </button>
-            <button
-              onclick="supprimerProfilCourant()"
-              class="py-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium transition-colors"
-            >
-              Supprimer
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      /**
-       * CONSTANTES ET ÉTAT GLOBAL
-       */
-      const CLE_BDD = "ws_employes_fr_v1";
-
-      const CONFIG_ROLES = {
-        Réceptionniste: { icone: "fa-bell-concierge", couleur: "#a2845e" },
-        "Technicien IT": { icone: "fa-server", couleur: "#8e8e93" },
-        "Agent de Sécurité": { icone: "fa-shield-halved", couleur: "#636366" },
-        Manager: { icone: "fa-user-tie", couleur: "#32d74b" },
-        "Agent d'Entretien": { icone: "fa-broom", couleur: "#64d2ff" },
-        Développeur: { icone: "fa-code", couleur: "#0a84ff" },
-        RH: { icone: "fa-users", couleur: "#bf5af2" },
-      };
-
-      const CONFIG_ZONES = {
-        conference: { nom: "Conférence", max: 10, restreint: [] },
-        reception: {
-          nom: "Réception",
-          max: 2,
-          restreint: ["Réceptionniste", "Manager", "Agent d'Entretien"],
-        },
-        serveurs: {
-          nom: "Serveurs",
-          max: 2,
-          restreint: ["Technicien IT", "Manager", "Agent d'Entretien"],
-        },
-        securite: {
-          nom: "Sécurité",
-          max: 2,
-          restreint: ["Agent de Sécurité", "Manager", "Agent d'Entretien"],
-        },
-        personnel: { nom: "Salle de Pause", max: 15, restreint: [] },
-        archives: {
-          nom: "Archives",
-          max: 2,
-          restreint: [
-            "Réceptionniste",
-            "Technicien IT",
-            "Agent de Sécurité",
-            "Manager",
-            "Développeur",
-            "RH",
-          ],
-        },
-      };
-
-      const DONNEES_INITIALES = [
-        {
-          id: "1",
-          nom: "Alice Dupont",
-          role: "Réceptionniste",
-          emplacement: "reception",
-          email: "alice@ws.com",
-          tel: "0601010101",
-          photo: "",
-          exps: [],
-        },
-        {
-          id: "2",
-          nom: "Bob Martin",
-          role: "Technicien IT",
-          emplacement: "serveurs",
-          email: "bob@ws.com",
-          tel: "0602020202",
-          photo: "",
-          exps: [],
-        },
-        {
-          id: "3",
-          nom: "Charlie Secur",
-          role: "Agent de Sécurité",
-          emplacement: "securite",
-          email: "charlie@ws.com",
-          tel: "0603030303",
-          photo: "",
-          exps: [],
-        },
-        {
-          id: "4",
-          nom: "Diana Boss",
-          role: "Manager",
-          emplacement: "conference",
-          email: "diana@ws.com",
-          tel: "0604040404",
-          photo: "",
-          exps: [],
-        },
-        {
-          id: "5",
-          nom: "Evan Dev",
-          role: "Développeur",
-          emplacement: "non_assigne",
-          email: "evan@ws.com",
-          tel: "0605050505",
-          photo: "",
-          exps: [],
-        },
-      ];
-
-      let employes = [];
-      let idGlissement = null;
-      let idProfilCourant = null;
-
-      /**
-       * FONCTIONS DE DONNÉES
-       */
-      function initialiserApp() {
-        const select = document.getElementById("emp-role");
-        if (select.options.length <= 1) {
-          Object.keys(CONFIG_ROLES).forEach((role) => {
-            const opt = document.createElement("option");
-            opt.value = role;
-            opt.innerText = role;
-            select.appendChild(opt);
-          });
-        }
-        chargerDonnees();
-      }
-
-      function chargerDonnees() {
-        const stocke = localStorage.getItem(CLE_BDD);
-        if (stocke) {
-          employes = JSON.parse(stocke);
-        } else {
-          employes = JSON.parse(JSON.stringify(DONNEES_INITIALES));
-          sauvegarderDonnees();
-        }
-        afficherApplication();
-      }
-
-      function sauvegarderDonnees() {
-        localStorage.setItem(CLE_BDD, JSON.stringify(employes));
-      }
-
-      function obtenirEmployeParId(id) {
-        return employes.find((e) => e.id === id);
-      }
-
-      function ajouterEmploye(emp) {
-        employes.push(emp);
-        sauvegarderDonnees();
-        afficherApplication();
-      }
-
-      function mettreAJourEmploye(id, donnees) {
-        const idx = employes.findIndex((e) => e.id === id);
-        if (idx !== -1) {
-          employes[idx] = { ...employes[idx], ...donnees };
-          sauvegarderDonnees();
-          afficherApplication();
-        }
-      }
-
-      function supprimerEmploye(id) {
-        employes = employes.filter((e) => e.id !== id);
-        sauvegarderDonnees();
-        afficherApplication();
-      }
-
-      function deplacerEmploye(id, nouvelleZoneId) {
-        const emp = obtenirEmployeParId(id);
-        if (emp) {
-          emp.emplacement = nouvelleZoneId;
-          sauvegarderDonnees();
-          afficherApplication();
-        }
-      }
-
-      function validerDeplacement(empId, zoneId) {
-        if (zoneId === "non_assigne") return { valide: true };
-        const emp = obtenirEmployeParId(empId);
-        if (!emp) return { valide: false, msg: "Employé introuvable" };
-
-        const regleZone = CONFIG_ZONES[zoneId];
-        const compte = employes.filter((e) => e.emplacement === zoneId).length;
-
-        // Vérification Capacité
-        if (emp.emplacement !== zoneId && compte >= regleZone.max) {
-          return {
-            valide: false,
-            msg: `La zone ${regleZone.nom} est pleine (Max ${regleZone.max}).`,
-          };
-        }
-
-        // Règles de Rôle
-        if (emp.role === "Manager") return { valide: true };
-
-        if (zoneId === "archives" && emp.role === "Agent d'Entretien") {
-          return { valide: false, msg: "Accès Refusé : Archives." };
-        }
-
-        if (
-          regleZone.restreint.length > 0 &&
-          !regleZone.restreint.includes(emp.role)
-        ) {
-          return {
-            valide: false,
-            msg: `Rôle ${emp.role} non autorisé pour ${regleZone.nom}`,
-          };
-        }
-        return { valide: true };
-      }
-
-      function reinitialiserSimulation() {
-        if (confirm("Réinitialiser toutes les données par défaut ?")) {
-          localStorage.removeItem(CLE_BDD);
-          initialiserApp();
-        }
-      }
-
-      /**
-       * FONCTIONS D'AFFICHAGE (UI)
-       */
-      function afficherApplication(texteFiltre = "") {
-        document
-          .querySelectorAll(".conteneur-jetons")
-          .forEach((el) => (el.innerHTML = ""));
-        const zoneNonAssigne = document.getElementById("zone-non-assigne");
-        zoneNonAssigne.innerHTML = "";
-
-        const filtre = employes.filter(
-          (e) =>
-            e.nom.toLowerCase().includes(texteFiltre.toLowerCase()) ||
-            e.role.toLowerCase().includes(texteFiltre.toLowerCase())
-        );
-
-        document.getElementById("compteur-non-assignes").innerText =
-          filtre.filter((e) => e.emplacement === "non_assigne").length;
-
-        filtre.forEach((emp) => {
-          if (emp.emplacement === "non_assigne") {
-            zoneNonAssigne.appendChild(creerElementListe(emp));
-          } else {
-            const conteneur = document.getElementById(
-              `conteneur-${emp.emplacement}`
-            );
-            if (conteneur) conteneur.appendChild(creerJeton(emp));
-          }
-        });
-
-        verifierZonesObligatoires();
-      }
-
-      function filtrerVue(texte) {
-        afficherApplication(texte);
-      }
-
-      function creerJeton(emp) {
-        const div = document.createElement("div");
-        div.className = "jeton";
-        const urlPhoto =
-          emp.photo ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            emp.nom
-          )}&background=random&color=fff&bold=true`;
-        div.style.backgroundImage = `url('${urlPhoto}')`;
-        div.draggable = true;
-        div.dataset.id = emp.id;
-
-        div.ondragstart = gererDebutGlissement;
-        div.onclick = () => ouvrirProfil(emp.id);
-
-        const configRole = CONFIG_ROLES[emp.role] || {
-          icone: "fa-user",
-          couleur: "#8e8e93",
-        };
-
-        div.innerHTML = `
-                <div class="badge-jeton" style="border-color: rgba(0,0,0,0.1); color: ${configRole.couleur}">
-                    <i class="fa-solid ${configRole.icone}"></i>
-                </div>
-                <div class="suppr-jeton" onclick="event.stopPropagation(); deplacerEmploye('${emp.id}', 'non_assigne')">
+        <div class="contenu-modale rounded-3xl overflow-hidden border-0 w-full max-w-sm">
+            <!-- En-tête Couleur -->
+            <div class="h-32 bg-gradient-to-br from-gray-800 to-black relative">
+                <button onclick="fermerModale('profil')" class="absolute top-5 right-5 w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full text-white flex items-center justify-center transition-all">
                     <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="px-8 pb-8 text-center relative -mt-12">
+                <div class="w-24 h-24 mx-auto bg-white rounded-full p-1 mb-4 shadow-xl">
+                    <img id="prof-photo" src="" class="w-full h-full rounded-full object-cover">
                 </div>
-            `;
-        return div;
-      }
+                
+                <h2 id="prof-nom" class="text-2xl font-bold text-gray-900 mb-1"></h2>
+                <span id="prof-role" class="inline-block px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold"></span>
 
-      function creerElementListe(emp) {
-        const div = document.createElement("div");
-        div.className = "element-non-assigne group";
-        div.draggable = true;
-        div.dataset.id = emp.id;
-        div.ondragstart = gererDebutGlissement;
-        div.onclick = () => ouvrirModale("edition", emp.id);
-
-        const urlPhoto =
-          emp.photo ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            emp.nom
-          )}&background=random&color=fff`;
-
-        div.innerHTML = `
-                <img src="${urlPhoto}" alt="${emp.nom}">
-                <div class="flex-1 min-w-0">
-                    <div class="u-nom truncate group-hover:text-black transition-colors">${emp.nom}</div>
-                    <div class="u-role">${emp.role}</div>
-                </div>
-                <div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-apple-brown group-hover:text-white transition-all">
-                     <i class="fa-solid fa-pen text-[10px]"></i>
-                </div>
-            `;
-        return div;
-      }
-
-      function verifierZonesObligatoires() {
-        const obligatoires = ["reception", "securite"];
-        obligatoires.forEach((z) => {
-          const el = document.getElementById(`zone-${z}`);
-          const compte = employes.filter((e) => e.emplacement === z).length;
-          if (compte === 0) el.classList.add("vide-requise");
-          else el.classList.remove("vide-requise");
-        });
-      }
-
-      function notifier(msg, type = "info") {
-        const div = document.createElement("div");
-        const couleurs = {
-          error: "bg-red-500 text-white",
-          success: "bg-green-500 text-white",
-          warning: "bg-orange-500 text-white",
-          info: "bg-gray-900 text-white",
-        };
-        div.className = `fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl text-xs font-medium z-[60] tracking-wide transition-all duration-500 translate-y-10 opacity-0 flex items-center gap-2 backdrop-blur-md ${
-          couleurs[type] || couleurs["info"]
-        }`;
-        div.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
-        document.body.appendChild(div);
-        requestAnimationFrame(() =>
-          div.classList.remove("translate-y-10", "opacity-0")
-        );
-        setTimeout(() => {
-          div.classList.add("translate-y-10", "opacity-0");
-          setTimeout(() => div.remove(), 500);
-        }, 3000);
-      }
-
-      /**
-       * INTERACTIONS
-       */
-      function gererDebutGlissement(e) {
-        idGlissement = e.target.dataset.id;
-        e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.setData("text/plain", idGlissement);
-      }
-
-      function gererSurvol(e) {
-        e.preventDefault();
-        const zone = e.currentTarget;
-        if (!zone.classList.contains("glisser-dessus"))
-          zone.classList.add("glisser-dessus");
-      }
-
-      document.addEventListener("dragleave", (e) => {
-        if (
-          e.target.classList &&
-          e.target.classList.contains("zone-droppable")
-        ) {
-          e.target.classList.remove("glisser-dessus");
-        }
-      });
-
-      function gererDepot(e) {
-        e.preventDefault();
-        const zone = e.currentTarget;
-        zone.classList.remove("glisser-dessus");
-
-        const zoneId = zone.dataset.zone;
-        if (!idGlissement) return;
-
-        const validation = validerDeplacement(idGlissement, zoneId);
-
-        if (validation.valide) {
-          deplacerEmploye(idGlissement, zoneId);
-        } else {
-          notifier(validation.msg, "error");
-          zone.classList.add("depot-invalide");
-          setTimeout(() => zone.classList.remove("depot-invalide"), 500);
-        }
-        idGlissement = null;
-      }
-
-      function repartitionAuto() {
-        const obligatoires = ["reception", "serveurs", "securite"];
-
-        employes.forEach((emp) => {
-          let place = false;
-          for (let z of obligatoires) {
-            if (validerDeplacement(emp.id, z).valide && Math.random() > 0.4) {
-              const compte = employes.filter((e) => e.emplacement === z).length;
-              const max = CONFIG_ZONES[z].max;
-              if (compte < max) {
-                emp.emplacement = z;
-                place = true;
-                break;
-              }
-            }
-          }
-          if (!place) {
-            const ouvertes = ["conference", "personnel", "archives"];
-            const zoneAleatoire =
-              ouvertes[Math.floor(Math.random() * ouvertes.length)];
-            if (validerDeplacement(emp.id, zoneAleatoire).valide) {
-              emp.emplacement = zoneAleatoire;
-            } else {
-              emp.emplacement = "non_assigne";
-            }
-          }
-        });
-        sauvegarderDonnees();
-        afficherApplication();
-        notifier("Organisation automatique terminée", "success");
-      }
-
-      function ajoutRapide(zoneId) {
-        const compteActuel = employes.filter(
-          (e) => e.emplacement === zoneId
-        ).length;
-        const max = CONFIG_ZONES[zoneId].max;
-
-        if (compteActuel >= max) {
-          notifier(
-            `Zone ${CONFIG_ZONES[zoneId].nom} pleine (Max ${max}).`,
-            "error"
-          );
-          return;
-        }
-
-        const eligible = employes.filter(
-          (e) =>
-            e.emplacement === "non_assigne" &&
-            validerDeplacement(e.id, zoneId).valide
-        );
-
-        if (eligible.length === 0) {
-          notifier("Aucun employé éligible disponible.", "warning");
-          return;
-        }
-
-        deplacerEmploye(eligible[0].id, zoneId);
-        notifier(
-          `${eligible[0].nom} assigné à ${CONFIG_ZONES[zoneId].nom}`,
-          "success"
-        );
-      }
-
-      /**
-       * GESTION DES MODALES
-       */
-      function ouvrirModale(mode, id = null) {
-        const modale = document.getElementById("modale-employe");
-        modale.classList.add("actif");
-        document.getElementById("formulaire-employe").reset();
-        document.getElementById("conteneur-experiences").innerHTML = "";
-        document.getElementById("emp-id").value = "";
-        document.getElementById("apercu-photo").src = "";
-
-        if (mode === "edition" && id) {
-          document.getElementById("titre-modale").innerText =
-            "Modifier Employé";
-          document.getElementById("emp-id").value = id;
-          const emp = obtenirEmployeParId(id);
-          if (emp) {
-            document.getElementById("emp-nom").value = emp.nom;
-            document.getElementById("emp-role").value = emp.role;
-            document.getElementById("emp-email").value = emp.email;
-            document.getElementById("emp-tel").value = emp.tel;
-            document.getElementById("emp-photo").value = emp.photo || "";
-            mettreAJourApercu();
-            if (emp.exps)
-              emp.exps.forEach((exp) => ajouterChampExperience(exp));
-          }
-        } else {
-          document.getElementById("titre-modale").innerText = "Nouvel Employé";
-          ajouterChampExperience();
-        }
-      }
-
-      function fermerModale(type) {
-        const id = type === "employe" ? "modale-employe" : "modale-profil";
-        document.getElementById(id).classList.remove("actif");
-      }
-
-      function gererSoumissionFormulaire(e) {
-        e.preventDefault();
-        const id = document.getElementById("emp-id").value;
-        const nom = document.getElementById("emp-nom").value;
-        const role = document.getElementById("emp-role").value;
-        const email = document.getElementById("emp-email").value;
-        const tel = document.getElementById("emp-tel").value;
-        const photo = document.getElementById("emp-photo").value;
-
-        // Validation
-        let valide = true;
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          document.getElementById("err-email").classList.remove("hidden");
-          valide = false;
-        } else document.getElementById("err-email").classList.add("hidden");
-
-        if (!/^\d{10}$/.test(tel.replace(/\s/g, ""))) {
-          document.getElementById("err-tel").classList.remove("hidden");
-          valide = false;
-        } else document.getElementById("err-tel").classList.add("hidden");
-
-        if (!valide) return;
-
-        // Validation des Expériences
-        const exps = [];
-        const elementsExp = document.querySelectorAll(".element-exp");
-        let erreurDate = false;
-
-        elementsExp.forEach((item) => {
-          const titre = item.querySelector(".exp-titre").value;
-          const debut = item.querySelector(".exp-debut").value;
-          const fin = item.querySelector(".exp-fin").value;
-
-          if (debut && fin) {
-            if (new Date(debut) > new Date(fin)) {
-              erreurDate = true;
-              item.querySelector(".exp-debut").classList.add("border-red-500");
-              item.querySelector(".exp-fin").classList.add("border-red-500");
-            } else {
-              item
-                .querySelector(".exp-debut")
-                .classList.remove("border-red-500");
-              item.querySelector(".exp-fin").classList.remove("border-red-500");
-            }
-          }
-          exps.push({ titre, debut, fin });
-        });
-
-        if (erreurDate) {
-          alert("La date de début ne peut pas être après la date de fin.");
-          return;
-        }
-
-        const donneesEmp = { nom, role, email, tel, photo, exps };
-
-        if (id) {
-          mettreAJourEmploye(id, donneesEmp);
-        } else {
-          ajouterEmploye({
-            id: crypto.randomUUID(),
-            emplacement: "non_assigne",
-            ...donneesEmp,
-          });
-        }
-        fermerModale("employe");
-      }
-
-      function ajouterChampExperience(
-        donnees = { titre: "", debut: "", fin: "" }
-      ) {
-        const div = document.createElement("div");
-        div.className =
-          "element-exp flex gap-3 mb-3 items-start p-3 bg-white rounded-xl border border-gray-200";
-        div.innerHTML = `
-                <div class="flex-1 grid grid-cols-1 gap-3">
-                    <input type="text" placeholder="Intitulé du poste" class="exp-titre champ-formulaire w-full px-3 py-2 text-xs" value="${donnees.titre}" required>
-                    <div class="flex gap-3">
-                        <input type="date" class="exp-debut champ-formulaire w-1/2 px-3 py-2 text-xs" value="${donnees.debut}" required>
-                        <input type="date" class="exp-fin champ-formulaire w-1/2 px-3 py-2 text-xs" value="${donnees.fin}">
+                <div class="mt-8 text-left space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-envelope text-xs"></i></div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Email</p>
+                            <p id="prof-email" class="text-sm text-gray-800 font-medium"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-phone text-xs"></i></div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Téléphone</p>
+                            <p id="prof-tel" class="text-sm text-gray-800 font-medium"></p>
+                        </div>
                     </div>
                 </div>
-                <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-red-500 mt-1 transition-colors"><i class="fa-solid fa-trash-can"></i></button>
-            `;
-        document.getElementById("conteneur-experiences").appendChild(div);
-      }
+                
+                <div class="mt-6 text-left">
+                     <p class="text-xs font-medium text-gray-400 mb-3 ml-1">Historique</p>
+                     <div id="prof-experiences" class="space-y-2 max-h-32 overflow-y-auto custom-scroll pr-2"></div>
+                </div>
 
-      function mettreAJourApercu() {
-        const url = document.getElementById("emp-photo").value;
-        const nom = document.getElementById("emp-nom").value || "?";
-        const apercu = document.getElementById("apercu-photo");
-        apercu.src =
-          url ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            nom
-          )}&background=random&color=fff`;
-        apercu.onerror = () => {
-          apercu.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            nom
-          )}&background=random&color=fff`;
-        };
-      }
+                <div class="grid grid-cols-2 gap-4 mt-8">
+                    <button onclick="retirerProfilCourant()" class="py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium transition-colors">
+                        Retirer
+                    </button>
+                    <button onclick="supprimerProfilCourant()" class="py-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium transition-colors">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      function ouvrirProfil(id) {
-        idProfilCourant = id;
-        const emp = obtenirEmployeParId(id);
-        if (!emp) return;
-
-        const modale = document.getElementById("modale-profil");
-        document.getElementById("prof-nom").innerText = emp.nom;
-        document.getElementById("prof-role").innerText = emp.role;
-        document.getElementById("prof-email").innerText = emp.email;
-        document.getElementById("prof-tel").innerText = emp.tel;
-
-        const urlPhoto =
-          emp.photo ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            emp.nom
-          )}&background=random&color=fff`;
-        document.getElementById("prof-photo").src = urlPhoto;
-
-        const conteneurExp = document.getElementById("prof-experiences");
-        conteneurExp.innerHTML = "";
-        if (emp.exps && emp.exps.length > 0) {
-          emp.exps.forEach((exp) => {
-            conteneurExp.innerHTML += `
-                        <div class="bg-gray-50 rounded-lg p-3 border border-gray-100">
-                            <div class="font-semibold text-gray-800 text-xs mb-0.5">${
-                              exp.titre
-                            }</div>
-                            <div class="text-[10px] text-gray-500">${
-                              exp.debut
-                            } — ${exp.fin || "Présent"}</div>
-                        </div>`;
-          });
-        } else {
-          conteneurExp.innerHTML =
-            '<span class="text-gray-400 italic text-xs">Aucun historique enregistré.</span>';
-        }
-
-        modale.classList.add("actif");
-      }
-
-      function retirerProfilCourant() {
-        if (idProfilCourant) {
-          deplacerEmploye(idProfilCourant, "non_assigne");
-          fermerModale("profil");
-        }
-      }
-
-      function supprimerProfilCourant() {
-        if (
-          idProfilCourant &&
-          confirm("Supprimer définitivement cet employé ?")
-        ) {
-          supprimerEmploye(idProfilCourant);
-          fermerModale("profil");
-        }
-      }
-
-      // Initialisation
-      initialiserApp();
-    </script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>
