@@ -333,3 +333,29 @@ function handleDragOver(e) {
   const zone = e.currentTarget;
   if (!zone.classList.contains("drag-over")) zone.classList.add("drag-over");
 }
+
+document.addEventListener("dragLeave", (e) => {
+  if (e.target.classList && e.target.classList.contains("zone-droppable")) {
+    e.target.classList.remove("drag-over");
+  }
+});
+
+function handleDrop(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove("drag-over");
+
+  const zoneId = zone.dataset.zone;
+  if (!draggedId) return;
+
+  const validation = validationMove(draggedId, zoneId);
+
+  if (validation.valid) {
+    moveEmployee(draggedId, zoneId);
+  } else {
+    toast(validation.msg, "error");
+    zone.classList.add("invalid-pop");
+    setTimeout(() => zone.classList.remove("invalid-drop"), 500);
+  }
+  draggedId = null;
+}
