@@ -1,45 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WorkSphere</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["Inter", "sans-serif"],
-          },
-          colors: {
-            apple: {
-              gray: "#f5f5f7",
-              dark: "#1d1d1f",
-              blue: "#0071e3",
-              brown: "#8e7d6b",
-              brownDark: "#5e5042",
-              surface: "rgba(255, 255, 255, 0.85)",
+<head>
+    <!-- Head content will be added in next steps -->
+</head>
+<body>
+    <!-- Body content will be added in next steps -->
+</body>
+</html>
+            },
+            boxShadow: {
+              glass: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
+              float: "0 10px 40px -10px rgba(0,0,0,0.08)",
             },
           },
-          boxShadow: {
-            glass: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
-            float: "0 10px 40px -10px rgba(0,0,0,0.08)",
-          },
         },
-      },
-    };
-  </script>
-  <body></body>
+      };
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-[#f2f2f7]">
+    <!-- Floating Glass Navbar -->
+    <nav
+      class="fixed top-4 left-4 right-4 h-[72px] z-50 flex items-center justify-between px-6 rounded-2xl nav-glass"
+    >
+      <div class="flex items-center gap-4">
+        <div
+          class="w-10 h-10 bg-[#1d1d1f] rounded-xl flex items-center justify-center text-white text-lg shadow-md"
+        >
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-wide text-[#1d1d1f]">
+            WorkSphere
+          </h1>
+          <p
+            class="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-none mt-0.5"
+          >
+            Space Management
+          </p>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button
+          onclick="resetSimulation()"
+          class="group px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 bg-transparent hover:bg-white/50 rounded-full transition-all duration-300 border border-transparent hover:border-gray-200"
+        >
+          <i
+            class="fa-solid fa-arrow-rotate-left mr-2 group-hover:-rotate-180 transition-transform duration-500"
+          ></i>
+          Reset
+        </button>
+        <button
+          onclick="autoOrganize()"
+          class="px-5 py-2 text-xs font-medium text-white bg-[#1d1d1f] hover:opacity-90 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+        >
+          Auto Assign
+        </button>
+      </div>
+    </nav>
+
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2
+          class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-6"
+        >
+          Personnel
+        </h2>
+
+        <!-- Search -->
+        <div class="relative mb-6 group">
+          <i
+            class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400 transition-colors"
+          ></i>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search team..."
+            oninput="filterView(this.value)"
+            class="w-full bg-gray-100 border border-transparent py-2.5 pl-10 pr-4 rounded-xl text-sm text-gray-900 focus:bg-white focus:border-gray-200 focus:ring-2 focus:ring-gray-100 transition-all outline-none"
+          />
+        </div>
+
+        <!-- Add Button -->
+        <button
+          onclick="openModal('add')"
+          class="w-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-900 font-medium py-3 px-4 rounded-xl mb-6 transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
+        >
+          <div
+            class="w-6 h-6 rounded-full bg-apple-brown flex items-center justify-center text-white text-xs"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </div>
+          <span>New Entry</span>
+        </button>
+
+        <!-- Unassigned List -->
+        <div class="flex justify-between items-end mb-3 px-1">
+          <span class="text-xs font-medium text-gray-400">Unassigned</span>
+          <span
+            id="unassigned-count"
+            class="bg-gray-200 text-gray-600 text-[10px] px-2 py-0.5 rounded-full font-bold"
+            >0</span
+          >
+        </div>
+
+        <div
+          id="unassigned-zone"
+          class="flex-1 overflow-y-auto pr-1 zone-droppable min-h-[100px]"
+          data-zone="unassigned"
+          ondragover="handleDragOver(event)"
+          ondrop="handleDrop(event)"
+        >
+          <!-- JS Injected -->
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="floor-plan">
+          <!-- 1. Conference Room -->
+          <div
+            class="zone area-conference zone-droppable"
+            id="zone-conference"
+            data-zone="conference"
+            ondragover="handleDragOver(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="zone-label">Conference</div>
+            <div class="conf-table">MEETING</div>
+            <div class="conf-chair" style="top: 35px; left: 25%"></div>
+            <div class="conf-chair" style="top: 35px; left: 45%"></div>
+            <div class="conf-chair" style="top: 35px; left: 65%"></div>
+            <div class="conf-chair" style="bottom: 35px; left: 25%"></div>
+            <div class="conf-chair" style="bottom: 35px; left: 45%"></div>
+            <div class="conf-chair" style="bottom: 35px; left: 65%"></div>
+            <div class="token-container" id="container-conference"></div>
+            <div class="add-btn-zone" onclick="openQuickAdd('conference')">
+              +
+            </div>
+          </div>
+
+          <!-- 2. Hallway -->
+          <div class="zone area-hallway">
+            <div class="rug"></div>
+            <div class="door door-v d-conf"></div>
+            <div class="door door-v d-recep"></div>
+            <div class="door door-v d-serv"></div>
+            <div class="door door-v d-staff"></div>
+          </div>
+
+          <!-- 3. Servers Room -->
+          <div
+            class="zone area-servers zone-droppable"
+            id="zone-servers"
+            data-zone="servers"
+            ondragover="handleDragOver(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="zone-label">Servers</div>
+            <div
+              class="flex flex-col h-full justify-center items-center pt-6 pb-2 w-full gap-2"
+            >
+              <div class="rack"></div>
+              <div class="rack"></div>
+              <div class="rack"></div>
+            </div>
+            <div class="token-container" id="container-servers"></div>
+            <div class="add-btn-zone" onclick="openQuickAdd('servers')">+</div>
+          </div>
+
+          <!-- 4. Security Room -->
+          <div
+            class="zone area-security zone-droppable"
+            id="zone-security"
+            data-zone="security"
+            ondragover="handleDragOver(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="zone-label">Security</div>
+            <div class="sec-desk-corner"></div>
+            <div class="door d-sec"></div>
+            <div class="token-container" id="container-security"></div>
+            <div class="add-btn-zone" onclick="openQuickAdd('security')">+</div>
+          </div>
+
+          <!-- 5. Reception -->
+          <div
+            class="zone area-reception zone-droppable"
+            id="zone-reception"
+            data-zone="reception"
+            ondragover="handleDragOver(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="zone-label">Reception</div>
+            <div class="recep-desk"></div>
+            <div class="recep-chair"></div>
+            <div class="sofa-l"></div>
+            <div class="recep-round-table"></div>
+            <div class="token-container" id="container-reception"></div>
+            <div class="add-btn-zone" onclick="openQuickAdd('reception')">
+              +
+            </div>
+          </div>
+
+          <!-- 6. Staff Room -->
+          <div
+            class="zone area-staff zone-droppable"
+            id="zone-staff"
+            data-zone="staff"
+            ondragover="handleDragOver(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="zone-label">Lounge</div>
+            <div class="staff-sofa"></div>
+            <div class="token-container" id="container-staff"></div>
+            <div class="add-btn-zone" onclick="openQuickAdd('staff')">+</div>
+          </div>
+
+          <!-- 7. Vault -->
+          <div
+            class="zone area-vault zone-droppable"
+            id="zone-vault"
+            data-zone="vault"
+            ondragover="handleDragOver(event)"
+            ondrop="handleDrop(event)"
+          >
+            <div class="zone-label">Vault</div>
+            <div class="absolute bottom-4 left-4 right-4 flex justify-between">
+              <div class="vault-box"></div>
+              <div class="vault-box"></div>
+              <div class="vault-box"></div>
+            </div>
+            <div class="token-container" id="container-vault"></div>
+            <div class="add-btn-zone" onclick="openQuickAdd('vault')">+</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal: Edit/Add Employee -->
+    <div id="modal-employee" class="modal-backdrop">
+      <div class="modal-content p-8">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-2xl font-bold text-gray-900" id="modal-title">
+            New Personnel
+          </h2>
+          <button
+            onclick="closeModal('employee')"
+            class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition-colors"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="employee-form" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" id="emp-id" />
+
+          <div class="flex gap-6 mb-8">
+            <div
+              class="w-24 h-24 rounded-full bg-gray-100 border border-gray-200 flex-shrink-0 overflow-hidden relative group"
+            >
+              <img
+                id="preview-photo"
+                src=""
+                class="w-full h-full object-cover opacity-90"
+              />
+            </div>
+            <div class="flex-1 space-y-5">
+              <div class="form-group">
+                <label
+                  class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
+                  >Full Name</label
+                >
+                <input
+                  type="text"
+                  id="emp-name"
+                  class="form-input w-full px-4 py-2.5 text-sm"
+                  placeholder="e.g. Sarah Connor"
+                  required
+                  oninput="updatePhotoPreview()"
+                />
+              </div>
+              <div class="form-group">
+                <label
+                  class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
+                  >Role</label
+                >
+                <div class="relative">
+                  <select
+                    id="emp-role"
+                    class="form-input w-full px-4 py-2.5 text-sm appearance-none bg-transparent"
+                    required
+                  >
+                    <option value="">Select Role...</option>
+                    <!-- Filled by JS -->
+                  </select>
+                  <i
+                    class="fa-solid fa-chevron-down absolute right-4 top-3.5 text-gray-400 text-xs pointer-events-none"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-5 mb-5">
+            <div>
+              <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="emp-email"
+                class="form-input w-full px-4 py-2.5 text-sm"
+                placeholder="email@company.com"
+                required
+              />
+              <p id="err-email" class="text-red-500 text-xs mt-1.5 ml-1 hidden">
+                Invalid format
+              </p>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
+                >Phone</label
+              >
+              <input
+                type="tel"
+                id="emp-phone"
+                class="form-input w-full px-4 py-2.5 text-sm"
+                placeholder="10 digits"
+                required
+              />
+              <p id="err-phone" class="text-red-500 text-xs mt-1.5 ml-1 hidden">
+                10 digits required
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <label class="block text-xs font-medium text-gray-500 mb-1.5 ml-1"
+              >Photo URL</label
+            >
+            <input
+              type="url"
+              id="emp-photo"
+              class="form-input w-full px-4 py-2.5 text-sm"
+              placeholder="https://..."
+              oninput="updatePhotoPreview()"
+            />
+          </div>
+
+          <!-- Expériences -->
+          <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 mb-8">
+            <div class="flex justify-between items-center mb-4">
+              <label
+                class="text-xs font-semibold text-gray-400 uppercase tracking-wider"
+                >Experience</label
+              >
+              <button
+                type="button"
+                onclick="addExperienceField()"
+                class="w-6 h-6 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-600 text-xs transition-colors"
+              >
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <div id="experiences-container" class="space-y-3"></div>
+          </div>
+
+          <div class="flex justify-end gap-4">
+            <button
+              type="button"
+              onclick="closeModal('employee')"
+              class="px-6 py-2.5 text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-8 py-2.5 bg-[#1d1d1f] hover:opacity-90 text-white text-sm font-medium rounded-full shadow-md transition-opacity"
+            >
+              Save Profile
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Profile Detail -->
+    <div id="modal-profile" class="modal-backdrop">
+      <div
+        class="modal-content rounded-3xl overflow-hidden border-0 w-full max-w-sm"
+      >
+        <!-- Header Color -->
+        <div class="h-32 bg-gradient-to-br from-gray-800 to-black relative">
+          <button
+            onclick="closeModal('profile')"
+            class="absolute top-5 right-5 w-8 h-8 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full text-white flex items-center justify-center transition-all"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="px-8 pb-8 text-center relative -mt-12">
+          <div
+            class="w-24 h-24 mx-auto bg-white rounded-full p-1 mb-4 shadow-xl"
+          >
+            <img
+              id="prof-photo"
+              src=""
+              class="w-full h-full rounded-full object-cover"
+            />
+          </div>
+
+          <h2 id="prof-name" class="text-2xl font-bold text-gray-900 mb-1"></h2>
+          <span
+            id="prof-role"
+            class="inline-block px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold"
+          ></span>
+
+          <div
+            class="mt-8 text-left space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-100"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600"
+              >
+                <i class="fa-solid fa-envelope text-xs"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
+                >
+                  Email
+                </p>
+                <p
+                  id="prof-email"
+                  class="text-sm text-gray-800 font-medium"
+                ></p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div
+                class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600"
+              >
+                <i class="fa-solid fa-phone text-xs"></i>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"
+                >
+                  Phone
+                </p>
+                <p
+                  id="prof-phone"
+                  class="text-sm text-gray-800 font-medium"
+                ></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-left">
+            <p class="text-xs font-medium text-gray-400 mb-3 ml-1">
+              Experience History
+            </p>
+            <div
+              id="prof-experiences"
+              class="space-y-2 max-h-32 overflow-y-auto custom-scroll pr-2"
+            ></div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mt-8">
+            <button
+              onclick="unassignCurrentProfile()"
+              class="py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-medium transition-colors"
+            >
+              Unassign
+            </button>
+            <button
+              onclick="deleteCurrentProfile()"
+              class="py-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-medium transition-colors"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
