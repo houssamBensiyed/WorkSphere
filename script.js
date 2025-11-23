@@ -224,6 +224,40 @@ function renderApp(filterText = "") {
 
   checkMandatoryZones();
 }
+
 function filterView(text) {
   renderApp(text);
+}
+
+function createToken(emp) {
+  const div = document.createElement("div");
+  div.className = "token";
+  const photoUrl =
+    emp.photo ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      emp.name
+    )}&background=random&color=fff&bold=true`;
+
+  div.style.backgroundImage = `url('${photoUrl}')`;
+  div.draggable = true;
+  div.dataset.id = emp.id;
+
+  div.ondragstart = handleDragStart;
+  div.onclick = () => openProfile(emp.id);
+
+  const roleConfig = ROLES_CONFIG[emp.role] || {
+    icon: "fa-user",
+    color: "#8e8e93",
+  };
+
+  div.innerHTML = `
+                <div class="token-badge" style="border-color: rgba(0,0,0,0.1); color: ${roleConfig.color}">
+                    <i class="fa-solid ${roleConfig.icon}"></i>
+                </div>
+                <div class="token-remove" onclick="event.stopPropagation(); moveEmployee('${emp.id}', 'unassigned')">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            `;
+
+  return div;
 }
