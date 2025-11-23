@@ -261,3 +261,63 @@ function createToken(emp) {
 
   return div;
 }
+
+function createListItem(emp) {
+  const div = document.createElement("div");
+  div.className = "unassigned-item group";
+  div.draggable = true;
+  div.dataset.id = emp.id;
+  div.ondragstart = handleDragStart;
+  div.onclick = () => openModal("edit", emp.id);
+
+  const photoUrl =
+    emp.photo ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      emp.name
+    )}&background=random&color=fff`;
+
+  div.innerHTML = `
+                    <img src="${photoUrl}" alt="${emp.name}">
+                <div class="flex-1 min-w-0">
+                    <div class="u-name truncate group-hover:text-black transition-colors">${emp.name}</div>
+                    <div class="u-role">${emp.role}</div>
+                </div>
+                <div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-apple-brown group-hover:text-white transition-all">
+                     <i class="fa-solid fa-pen text-[10px]"></i>
+                </div>
+            `;
+  return div;
+}
+
+function checkMandatoryZones() {
+  const mandatory = ["reception", "security"];
+  mandatory.forEach((z) => {
+    const el = document.getElementById(`zone-${z}`);
+    const count = employees.filter((e) => e.location === z).length;
+    if (count === 0) el.classList.add("required-empty");
+    else el.classList.remove("required-empty");
+  });
+}
+
+function toast(msg, type = "info") {
+  const div = document.createElement("div");
+  const colors = {
+    error: "bg-red-500 text-white",
+    success: "bg-green-500 text-white",
+    warning: "bg-orange-500 text-white",
+    info: "bg-gray-900 text-white",
+  };
+  div.className = `fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl text-xs font-medium z-[60] tracking-wide transition-all duration-500 translate-y-10 opacity-0 flex items-center gap-2 backdrop-blur-md ${
+    colors[type] || colors["info"]
+  }`;
+  div.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
+  document.body.appendChild(div);
+  requestAnimationFrame(() =>
+    div.classList.remove("translate-y-10", "opacity-0")
+  );
+
+  setTimeout(() => {
+    div.classList.add("translate-y-10", "opacity-0");
+    setTimeout(() => div.remove(), 500);
+  }, 3000);
+}
